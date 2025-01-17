@@ -1,6 +1,6 @@
 -- Création de la base de données
-CREATE DATABASE IF NOT EXISTS GestionBoulangerie;
-USE GestionBoulangerie;
+CREATE DATABASE IF NOT EXISTS GestionBoulangerie4;
+USE GestionBoulangerie4;
 
 -- Table Administrateur
 CREATE TABLE Administrateur (
@@ -91,7 +91,7 @@ CREATE TABLE Stock (
     id_stock INT AUTO_INCREMENT PRIMARY KEY,
     id_produit INT NOT NULL,
     quantite_disponible INT NOT NULL,
-    date_mise_a_jour DATE DEFAULT CURRENT_DATE,
+    date_mise_a_jour DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_produit) REFERENCES Produit(id_produit) ON DELETE CASCADE
 );
 
