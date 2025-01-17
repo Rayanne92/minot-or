@@ -1,6 +1,6 @@
 -- Création de la base de données
-CREATE DATABASE IF NOT EXISTS GestionBoulangerie4;
-USE GestionBoulangerie4;
+CREATE DATABASE IF NOT EXISTS GestionBoulangerie;
+USE GestionBoulangerie;
 
 -- Table Administrateur
 CREATE TABLE Administrateur (
