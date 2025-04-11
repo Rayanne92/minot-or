@@ -1,118 +1,148 @@
--- Création de la base de données
-CREATE DATABASE IF NOT EXISTS GestionBoulangerie;
-USE GestionBoulangerie;
+CREATE DATABASE Boulangerie;
+USE Boulangerie;
+
+-- Table Societe
+CREATE TABLE Societe (
+    id_Societe INT PRIMARY KEY,
+    nom VARCHAR(255)
+);
 
 -- Table Administrateur
 CREATE TABLE Administrateur (
-    id_administrateur INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    prenom VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    telephone VARCHAR(15),
-    mot_de_passe VARCHAR(255) NOT NULL
-);
-
--- Table Boulangerie
-CREATE TABLE Boulangerie (
-    id_boulangerie INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    telephone VARCHAR(15),
-    email VARCHAR(100) UNIQUE,
-    adresse VARCHAR(255)
-);
-
--- Table Menu
-CREATE TABLE Menu (
-    id_menu INT AUTO_INCREMENT PRIMARY KEY,
-    nom_menu VARCHAR(100) NOT NULL,
-    description TEXT,
-    id_boulangerie INT NOT NULL,
-    FOREIGN KEY (id_boulangerie) REFERENCES Boulangerie(id_boulangerie) ON DELETE CASCADE
-);
-
--- Table Plat
-CREATE TABLE Plat (
-    id_plat INT AUTO_INCREMENT PRIMARY KEY,
-    nom_plat VARCHAR(100) NOT NULL,
-    description TEXT,
-    prix DECIMAL(10, 2) NOT NULL,
-    id_menu INT NOT NULL,
-    FOREIGN KEY (id_menu) REFERENCES Menu(id_menu) ON DELETE CASCADE
+    id_administrateur INT PRIMARY KEY,
+    nom VARCHAR(255),
+    prenom VARCHAR(255),
+    email VARCHAR(255),
+    telephone VARCHAR(20),
+    mot_de_passe VARCHAR(255)
 );
 
 -- Table Client
 CREATE TABLE Client (
-    id_client INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    prenom VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE,
-    telephone VARCHAR(15),
-    adresse VARCHAR(255)
+    id_client INT PRIMARY KEY,
+    typeClient VARCHAR(50),
+    nom VARCHAR(255),
+    prenom VARCHAR(255),
+    telephone VARCHAR(20),
+    email VARCHAR(255),
+    adresse VARCHAR(255),
+    id_Societe INT,
+    FOREIGN KEY (id_Societe) REFERENCES Societe(id_Societe)
 );
 
--- Table Commande
-CREATE TABLE Commande (
-    id_commande INT AUTO_INCREMENT PRIMARY KEY,
-    date_commande DATE NOT NULL,
-    heure_commande TIME NOT NULL,
-    adresse_livraison TEXT,
-    id_client INT NOT NULL,
-    FOREIGN KEY (id_client) REFERENCES Client(id_client) ON DELETE CASCADE
-);
-
--- Table CommandePlat (Table intermédiaire pour N:M)
-CREATE TABLE CommandePlat (
-    id_commande INT NOT NULL,
-    id_plat INT NOT NULL,
-    quantite INT NOT NULL,
-    PRIMARY KEY (id_commande, id_plat),
-    FOREIGN KEY (id_commande) REFERENCES Commande(id_commande) ON DELETE CASCADE,
-    FOREIGN KEY (id_plat) REFERENCES Plat(id_plat) ON DELETE CASCADE
-);
-
--- Table Facture
-CREATE TABLE Facture (
-    id_facture INT AUTO_INCREMENT PRIMARY KEY,
-    id_commande INT NOT NULL,
-    montant_total DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (id_commande) REFERENCES Commande(id_commande) ON DELETE CASCADE
+-- Table Devis
+CREATE TABLE Devis (
+    idDevis INT PRIMARY KEY,
+    Etat VARCHAR(50),
+    nomProduit VARCHAR(255),
+    Description TEXT,
+    Quantite FLOAT,
+    id_client INT,
+    FOREIGN KEY (id_client) REFERENCES Client(id_client)
 );
 
 -- Table Produit
 CREATE TABLE Produit (
-    id_produit INT AUTO_INCREMENT PRIMARY KEY,
-    nom_produit VARCHAR(100) NOT NULL,
+    id_produit INT PRIMARY KEY,
+    nom_produit VARCHAR(255),
     description TEXT,
-    prix DECIMAL(10, 2) NOT NULL
+    stock INT,
+    prix INT
 );
 
--- Table Stock
-CREATE TABLE Stock (
-    id_stock INT AUTO_INCREMENT PRIMARY KEY,
-    id_produit INT NOT NULL,
-    quantite_disponible INT NOT NULL,
-    date_mise_a_jour DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_produit) REFERENCES Produit(id_produit) ON DELETE CASCADE
+-- Table Fournisseur
+CREATE TABLE Fournisseur (
+    idFournisseur INT PRIMARY KEY,
+    nomFournisseur VARCHAR(255),
+    QuantitedeProduit FLOAT,
+    NomProduitFournisseur VARCHAR(255),
+    EtatCommandeFournisseur VARCHAR(50)
 );
 
--- Table Employé
+-- Table Commande
+CREATE TABLE Commande (
+    id_commande INT PRIMARY KEY,
+    date_commande DATE,
+    heure_commande TIME,
+    id_client INT,
+    quantite INT,
+    id_plat INT,
+    adresse_livraison TEXT,
+    FOREIGN KEY (id_client) REFERENCES Client(id_client)
+);
+
+-- Table Facture
+CREATE TABLE Facture (
+    id_facture INT PRIMARY KEY,
+    id_commande INT,
+    montant_total DECIMAL(10,2),
+    dateFacture DATETIME,
+    typeClient VARCHAR(50),
+    nomClient VARCHAR(255),
+    prenomClient VARCHAR(255),
+    nomSociete VARCHAR(255),
+    FOREIGN KEY (id_commande) REFERENCES Commande(id_commande)
+);
+
+-- Table Employe
 CREATE TABLE Employe (
-    id_employe INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    prenom VARCHAR(100) NOT NULL,
-    poste VARCHAR(50),
-    salaire DECIMAL(10, 2)
+    id_employe INT PRIMARY KEY,
+    nom VARCHAR(255),
+    prenom VARCHAR(255),
+    Poste VARCHAR(50),
+    Salaire INT,
+    Email VARCHAR(255),
+    MotdePasse VARCHAR(255)
 );
 
 -- Table Livreur
 CREATE TABLE Livreur (
-    id_livreur INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    prenom VARCHAR(100) NOT NULL,
-    telephone VARCHAR(15) NOT NULL,
-    id_commande INT,
+    id_livreur INT PRIMARY KEY,
+    commande_id INT,
     adresse_livraison TEXT,
-    date_livraison DATE,
     statut_livraison VARCHAR(50),
-    FOREIGN KEY (id_commande) REFERENCES Commande(id_commande) ON DELETE SET NULL
+    date_livraison DATE,
+    FOREIGN KEY (commande_id) REFERENCES Commande(id_commande)
+);
+
+-- Table Stock
+CREATE TABLE Stock (
+    id_stock INT PRIMARY KEY,
+    id_produit INT,
+    quantite_disponible INT,
+    date DATE,
+    FOREIGN KEY (id_produit) REFERENCES Produit(id_produit)
+);
+
+-- Table Panier
+CREATE TABLE Panier (
+    idPanier INT PRIMARY KEY,
+    Total INT,
+    Quantite INT,
+    PrixLivraison DECIMAL(10,2),
+    Totalttc INT
+);
+
+-- Table Bordereau
+CREATE TABLE Bordereau (
+    idBordereau INT PRIMARY KEY,
+    Reference VARCHAR(255),
+    QrCode VARCHAR(255),
+    DateCreation DATE,
+    id_commande INT,
+    FOREIGN KEY (id_commande) REFERENCES Commande(id_commande)
+);
+
+-- Table Entrepot
+CREATE TABLE Entrepot (
+    idEntrepot INT PRIMARY KEY,
+    nomEntrepot VARCHAR(255)
+);
+
+-- Table ListesEnvies
+CREATE TABLE ListesEnvies (
+    idListesEnvies INT PRIMARY KEY,
+    total INT,
+    idProduit INT,
+    FOREIGN KEY (idProduit) REFERENCES Produit(id_produit)
 );
