@@ -146,3 +146,173 @@ CREATE TABLE ListesEnvies (
     idProduit INT,
     FOREIGN KEY (idProduit) REFERENCES Produit(id_produit)
 );
+
+
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
+
+
+#------------------------------------------------------------
+# Table: customer
+#------------------------------------------------------------
+
+CREATE TABLE customer(
+        id_customer      Int  Auto_increment  NOT NULL ,
+        company_customer Varchar (50) NOT NULL ,
+        name_customer    Varchar (50) NOT NULL ,
+        surname_customer Varchar (50) NOT NULL ,
+        phone_customer   Varchar (50) NOT NULL ,
+        mail_customer    Varchar (50) NOT NULL ,
+        street           Varchar (255) NOT NULL ,
+        zip_code         Varchar (10) NOT NULL ,
+        city             Varchar (255) NOT NULL ,
+        country          Varchar (255) NOT NULL ,
+        type_customer    Varchar (50) NOT NULL
+	,CONSTRAINT customer_PK PRIMARY KEY (id_customer)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: salesman
+#------------------------------------------------------------
+
+CREATE TABLE salesman(
+        id_salesman      Int  Auto_increment  NOT NULL ,
+        name_salesman    Varchar (50) NOT NULL ,
+        surname_salesman Varchar (50) NOT NULL ,
+        phone_salesman   Varchar (50) NOT NULL ,
+        mail_salesman    Varchar (50) NOT NULL
+	,CONSTRAINT salesman_PK PRIMARY KEY (id_salesman)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: transaction
+#------------------------------------------------------------
+
+CREATE TABLE transaction(
+        id_transaction              Int  Auto_increment  NOT NULL ,
+        type_transaction            Enum ("Wishlist","Quote","Order") NOT NULL ,
+        creation_date_transaction   Datetime NOT NULL ,
+        total_amount_transaction    Decimal NOT NULL ,
+        payment_status_transaction  Enum ("Unpaid","Paid") NOT NULL ,
+        payment_method_transaction  Enum ("Bank Card","Bank Transfer","Bank Cashier","Cash") NOT NULL ,
+        payment_date_transaction    Datetime NOT NULL ,
+        salesman_transaction        Varchar (10) NOT NULL ,
+        salesman_choice_transaction Enum ("In progress","Completed","To be processed") NOT NULL ,
+        customer_choice_transaction Enum ("Accept","Refuse") NOT NULL ,
+        customer_review_transaction Varchar (50) NOT NULL ,
+        id_customer                 Int NOT NULL ,
+        id_salesman                 Int NOT NULL
+	,CONSTRAINT transaction_PK PRIMARY KEY (id_transaction)
+
+	,CONSTRAINT transaction_customer_FK FOREIGN KEY (id_customer) REFERENCES customer(id_customer)
+	,CONSTRAINT transaction_salesman0_FK FOREIGN KEY (id_salesman) REFERENCES salesman(id_salesman)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: stock
+#------------------------------------------------------------
+
+CREATE TABLE stock(
+        id_stock          Int  Auto_increment  NOT NULL ,
+        available_stock   Decimal NOT NULL ,
+        reserved_stock    Decimal NOT NULL ,
+        last_update_stock Datetime NOT NULL
+	,CONSTRAINT stock_PK PRIMARY KEY (id_stock)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: warehouse
+#------------------------------------------------------------
+
+CREATE TABLE warehouse(
+        id_warehouse       Int  Auto_increment  NOT NULL ,
+        name_warehouse     Varchar (50) NOT NULL ,
+        street             Varchar (255) NOT NULL ,
+        zip_code           Varchar (10) NOT NULL ,
+        city               Varchar (255) NOT NULL ,
+        country            Varchar (255) NOT NULL ,
+        type_warehouse     Varchar (50) NOT NULL ,
+        capacity_warehouse Decimal NOT NULL
+	,CONSTRAINT warehouse_PK PRIMARY KEY (id_warehouse)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: supplier
+#------------------------------------------------------------
+
+CREATE TABLE supplier(
+        id_supplier      Int  Auto_increment  NOT NULL ,
+        name_supplier    Varchar (50) NOT NULL ,
+        surname_supplier Varchar (50) NOT NULL ,
+        phone_supplier   Varchar (50) NOT NULL ,
+        mail_supplier    Varchar (50) NOT NULL
+	,CONSTRAINT supplier_PK PRIMARY KEY (id_supplier)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: deliveryman
+#------------------------------------------------------------
+
+CREATE TABLE deliveryman(
+        id_deliveryman              Int  Auto_increment  NOT NULL ,
+        name_deliveryman            Varchar (50) NOT NULL ,
+        surname_deliveryman         Varchar (50) NOT NULL ,
+        phone_deliveryman           Varchar (50) NOT NULL ,
+        mail_deliveryman            Varchar (50) NOT NULL ,
+        driving_license_deliveryman Enum ("B","C","CE") NOT NULL
+	,CONSTRAINT deliveryman_PK PRIMARY KEY (id_deliveryman)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: vehicle
+#------------------------------------------------------------
+
+CREATE TABLE vehicle(
+        id_vehicle              Int  Auto_increment  NOT NULL ,
+        registration_vehicle    Varchar (10) NOT NULL ,
+        type_vehicle            Varchar (50) NOT NULL ,
+        capacity_vehicle        Decimal NOT NULL ,
+        availability_vehicle    Bool NOT NULL ,
+        driving_license_vehicle Enum ("B","C","CE") NOT NULL
+	,CONSTRAINT vehicle_PK PRIMARY KEY (id_vehicle)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: operatorman
+#------------------------------------------------------------
+
+CREATE TABLE operatorman(
+        id_operatorman            Int  Auto_increment  NOT NULL ,
+        type_maintain_operatorman Varchar (50) NOT NULL
+	,CONSTRAINT operatorman_PK PRIMARY KEY (id_operatorman)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: minotier
+#------------------------------------------------------------
+
+CREATE TABLE minotier(
+        id_minotier Int  Auto_increment  NOT NULL
+	,CONSTRAINT minotier_PK PRIMARY KEY (id_minotier)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: product_type
+
+
+
+
+	=======================================================================
+	   Désolé, il faut activer cette version pour voir la suite du script ! 
+	=======================================================================
