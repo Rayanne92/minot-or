@@ -1,4 +1,4 @@
-# Commandes utilisées pour créer le projet Backend
+# Commandes utilisées pour créer le Backend
 
 ## Initialisation du projet
 ```bash
